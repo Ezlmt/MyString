@@ -8,6 +8,9 @@ public:
   MyString(const MyString& other);
   ~MyString();
 
+  MyString& operator=(const MyString& other);
+  void swap(MyString& other) noexcept;
+
   size_t size() const;
   const char* c_str() const;
 private:

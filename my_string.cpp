@@ -69,6 +69,26 @@ void MyString::cstr_copy(char* dst, const char* src, size_t n) {
   }
 }
 
+MyString& MyString::operator=(const MyString& other){
+  MyString temp(other);
+  swap(temp);
+  return *this;
+}
+
+void MyString::swap(MyString& other) noexcept {
+  char* data_tmp = other.data_;
+  size_t size_tmp = other.size_;
+  size_t cap_tmp = other.cap_;
+
+  other.data_ = this->data_;
+  other.size_ = this->size_;
+  other.cap_ = this->cap_;
+
+  this->data_ = data_tmp;
+  this->cap_ = cap_tmp;
+  this->size_ = size_tmp;
+}
+
 bool cstr_equal(const char* a, const char* b) {
   size_t i = 0;
   while ( a[i] != '\0' && b[i] != '\0') {
@@ -85,8 +105,11 @@ int main() {
   MyString b("hello");
   MyString c(b);
 
+  a = c;
+
   std::cout << b.size() << std::endl;
-  assert(a.size() == 0);
+  std::cout << a.c_str() << std::endl;
   assert(cstr_equal(b.c_str(), "hello"));
   assert(cstr_equal(b.c_str(), c.c_str()));
+  assert(cstr_equal(a.c_str(), c.c_str()));
 }

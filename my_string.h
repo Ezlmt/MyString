@@ -11,6 +11,8 @@ public:
   MyString& operator=(const MyString& other);
   MyString& operator+=(const MyString& other);
   MyString operator+(const MyString& other) const;
+  bool operator==(const MyString& other) const;
+  bool operator!=(const MyString& other) const;
   char& operator[](size_t index);
   const char& operator[](size_t index) const;
   void swap(MyString& other) noexcept;
@@ -26,3 +28,5 @@ private:
   static void cstr_copy(char* dst, const char* src, size_t n);
   void init_from(const char* src, size_t len);
 };
+
+bool cstr_equal(const char* a, const char* b);

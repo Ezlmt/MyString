@@ -94,6 +94,14 @@ char& MyString::operator[](size_t index) {
   return this->data_[index];
 }
 
+bool MyString::operator==(const MyString& other) const {
+  return cstr_equal(this->data_, other.data_);
+}
+
+bool MyString::operator!=(const MyString& other) const {
+  return !(*this == other);
+}
+
 const char& MyString::operator[](size_t index) const {
   assert(index < size_);
   return this->data_[index];
@@ -159,5 +167,8 @@ int main() {
   std::cout << d.c_str() << std::endl;
   MyString e = a + d;
   std::cout << e.c_str() << std::endl;
+
+  std::cout << (a == b) << std::endl;
+  std::cout << (a != d) << std::endl;
 
 }

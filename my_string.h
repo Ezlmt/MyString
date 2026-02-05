@@ -9,6 +9,10 @@ public:
   ~MyString();
 
   MyString& operator=(const MyString& other);
+  MyString& operator+=(const MyString& other);
+  MyString operator+(const MyString& other) const;
+  char& operator[](size_t index);
+  const char& operator[](size_t index) const;
   void swap(MyString& other) noexcept;
 
   size_t size() const;

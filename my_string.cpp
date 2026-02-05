@@ -89,6 +89,42 @@ void MyString::swap(MyString& other) noexcept {
   this->size_ = size_tmp;
 }
 
+char& MyString::operator[](size_t index) {
+  assert(index < size_);
+  return this->data_[index];
+}
+
+const char& MyString::operator[](size_t index) const {
+  assert(index < size_);
+  return this->data_[index];
+}
+
+MyString& MyString::operator+=(const MyString& other) {
+  size_t size_new = this->size_ + other.size_;
+  char* data_new = new char[size_new + 1];
+  for (int i=0; i<size_new; i++) {
+    if (i < this->size_) {
+      data_new[i] = this->data_[i];
+    } else {
+      data_new[i] = other.data_[i-this->size_];
+    }
+  }
+  data_new[size_new] = '\0';
+  delete[] this->data_;
+
+  this->data_ = data_new;
+  this->size_ = size_new;
+  this->cap_ = size_new;
+  
+  return *this;
+}
+
+MyString MyString::operator+(const MyString& other) const{
+  MyString res = *this;
+  res += other;
+  return res;
+};
+
 bool cstr_equal(const char* a, const char* b) {
   size_t i = 0;
   while ( a[i] != '\0' && b[i] != '\0') {
@@ -107,9 +143,21 @@ int main() {
 
   a = c;
 
+  char cc = a[2];
+  std::cout << cc << std::endl;
+
   std::cout << b.size() << std::endl;
   std::cout << a.c_str() << std::endl;
   assert(cstr_equal(b.c_str(), "hello"));
   assert(cstr_equal(b.c_str(), c.c_str()));
   assert(cstr_equal(a.c_str(), c.c_str()));
+
+  MyString d("123456");
+  d[5] = 'a';
+  std::cout << d.c_str() << std::endl;
+  d += "bbb";
+  std::cout << d.c_str() << std::endl;
+  MyString e = a + d;
+  std::cout << e.c_str() << std::endl;
+
 }

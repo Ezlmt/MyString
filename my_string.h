@@ -17,6 +17,10 @@ public:
   const char& operator[](size_t index) const;
   void swap(MyString& other) noexcept;
 
+  bool empty() const;
+  void clear();
+  void reserve(size_t new_cap);
+
   size_t size() const;
   const char* c_str() const;
 private:

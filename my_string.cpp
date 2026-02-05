@@ -109,21 +109,16 @@ const char& MyString::operator[](size_t index) const {
 
 MyString& MyString::operator+=(const MyString& other) {
   size_t size_new = this->size_ + other.size_;
-  char* data_new = new char[size_new + 1];
-  for (int i=0; i<size_new; i++) {
-    if (i < this->size_) {
-      data_new[i] = this->data_[i];
-    } else {
-      data_new[i] = other.data_[i-this->size_];
-    }
-  }
-  data_new[size_new] = '\0';
-  delete[] this->data_;
 
-  this->data_ = data_new;
-  this->size_ = size_new;
-  this->cap_ = size_new;
-  
+  if (size_new > this->cap_) {
+    reserve(size_new * 2);
+  }
+
+  cstr_copy(data_ + size_, other.data_, other.size_);
+
+  size_ = size_new;
+  data_[size_] = '\0';
+
   return *this;
 }
 
@@ -132,6 +127,32 @@ MyString MyString::operator+(const MyString& other) const{
   res += other;
   return res;
 };
+
+bool MyString::empty() const {
+  return this->size_ == 0;
+}
+
+void MyString::clear() {
+  this->size_ = 0;
+  this->data_[0] = '\0';
+}
+void MyString::reserve(size_t new_cap) {
+  if (new_cap <= cap_) {
+    return;
+  }
+  
+  char* new_data_ = new char[new_cap + 1];
+  
+  cstr_copy(new_data_, this->data_, this->size_);
+  
+  new_data_[this->size_] = '\0';
+  
+  delete[] this->data_;
+
+  this->cap_ = new_cap;
+  this->data_ = new_data_;
+}
+
 
 bool cstr_equal(const char* a, const char* b) {
   size_t i = 0;
